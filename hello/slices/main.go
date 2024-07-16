@@ -54,6 +54,21 @@ func slices1() {
 
 	// a = make([]int, 4, 2) // Error message is "invalid argument: length and capacity swapped"
 
+	var d []int
+	// default slice point is nil, len = 0 and cap = 0
+	fmt.Println("d: ", d, "Len(d): ", len(d), "Cap(d): ", cap(d))
+
+	for _, v := range d {
+		// nothing printed as len = 0
+        fmt.Println(v)
+    }
+
+	e := d[:]
+	fmt.Println("e: ", e, "Len(e): ", len(e), "Cap(e): ", cap(e))
+
+	d = append(d, 1000)
+	// will allocate a new array and return a new slice as the currLen = 0
+	fmt.Println("d: ", d, "Len(d): ", len(d), "Cap(d): ", cap(d))
 }
 
 func AppendInt(s []int, data ...int) []int {
