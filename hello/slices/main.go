@@ -9,6 +9,8 @@ func slices1() {
 	fmt.Println(s)
 	fmt.Println(len(s), cap(s))
 
+	fmt.Printf("%T, %T\n", s, &s)
+
 	b := []int{1,2,3,4,5}
 	c := b[2:3]
 
