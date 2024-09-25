@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package notes.v1;
+option go_package = "./notes/v1";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/visibility.proto";
+import "google/api/field_behavior.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Notes";
+        version: "1.0";
+        contact: {
+            name: "bbengfort";
+            url: "https://github.com/bbengfort/notes";
+            email: "info@bengfort.com";
+        };
+        license: {
+            name: "BSD 3-Clause License";
+            url: "https://github.com/bbengfort/notes/LICENSE";
+        };
+    };
+
+    schemes: HTTP;
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
+service NoteService {
+    rpc Fetch(NoteFilter) returns (Notebook) {
+        option (google.api.http) = {
+            get: "/api/v1/notes"
+        };
+    };
+    rpc Create(Note) returns (Notebook) {
+        option (google.api.http) = {
+            post: "/api/v1/notes"
+            body: "*"
+        };
+    };
+
+    rpc CancelRegisterIdentityByInstructionLink(MessagingIdentityRequest) returns (Notebook) {
+        
+        option (google.api.http) = {
+        post: "/v1/identity/{identity.type}/register-by-link/cancel"
+        body: "*"
+        };
+    };
+}
+
+message Note {
+    uint64 id = 1;
+    string timestamp = 2;
+    string author = 3;
+    string text = 4;
+    bool private = 5;
+}
+
+message NoteFilter {
+    repeated uint64 ids = 1;
+    repeated string author = 2;
+    string before = 3;
+    string after = 4;
+    bool private = 5;
+}
+
+message Notebook {
+    Error error = 1;
+    repeated Note notes = 2;
+}
+
+message Error {
+    uint32 code = 1;
+    string message = 2;
+}
+
+
+message MessagingIdentityRequest {
+  uint32 requestIdentity = 1 [(google.api.field_visibility).restriction = "HIDDEN"];
+  string userId = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The provisioned User ID."}, (google.api.field_behavior) = REQUIRED];
+  string companyId = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The company ID where the corporate phone number belongs."}, (google.api.field_behavior) = REQUIRED];
+  //Contains 2 properties: `id` (string, required) and `attributes` (array of objects). Property `id` is the corporate phone number. Property `attributes` contains `com.leapxpert.official.account.phone.number` for key `name`, `STRING` for key `type` and corporate phone number for key `values`.
+  FederatedIdentity identity = 4 [(google.api.field_behavior) = REQUIRED];
+  string corporateAccountId = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The corporate phone number ID."}];
+}
+
+message FederatedIdentity {
+  uint32 type = 1;
+  string id = 2;
+  // database entity id
+  string objectId = 5;
+  string companyId = 6;
+  string verificationState = 7;
+}
