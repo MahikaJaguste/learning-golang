@@ -82,16 +82,21 @@ message MessagingIdentityRequest {
   uint32 requestIdentity = 1 [(google.api.field_visibility).restriction = "HIDDEN"];
   string userId = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The provisioned User ID."}, (google.api.field_behavior) = REQUIRED];
   string companyId = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The company ID where the corporate phone number belongs."}, (google.api.field_behavior) = REQUIRED];
-  //Contains 2 properties: `id` (string, required) and `attributes` (array of objects). Property `id` is the corporate phone number. Property `attributes` contains `com.leapxpert.official.account.phone.number` for key `name`, `STRING` for key `type` and corporate phone number for key `values`.
   FederatedIdentity identity = 4 [(google.api.field_behavior) = REQUIRED];
+  FederatedIdentity2 identity2 = 6 [(google.api.field_behavior) = REQUIRED];
   string corporateAccountId = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The corporate phone number ID."}];
 }
 
 message FederatedIdentity {
-  uint32 type = 1;
+  uint32 type = 1; 
   string id = 2;
   // database entity id
   string objectId = 5;
   string companyId = 6;
   string verificationState = 7;
+}
+
+message FederatedIdentity2 {
+  string id = 2;
+  string objectId = 5;
 }

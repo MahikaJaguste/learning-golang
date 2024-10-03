@@ -67,3 +67,28 @@ func main() {
 	log.Println("Serving gRPC-Gateway on http://0.0.0.0:8090")
 	log.Fatalln(gwServer.ListenAndServe())
 }
+
+/*
+
+	// annotations_, _ := getFieldBehaviorOption(reg, f)
+	// isRequired := false
+
+	// for _, annotation := range annotations_ {
+	// 	if annotation == annotations.FieldBehavior_REQUIRED {
+	// 		isRequired = true
+	// 	}
+	// }
+	// if isRequired {
+	// 	schema.Required = append(schema.Required, *f.Name)
+	// }
+
+*/
+
+/*
+Command to use protoc to generate stubs:
+protoc -I ./proto \
+   --go_out ./proto --go_opt paths=source_relative \
+   --go-grpc_out ./proto --go-grpc_opt paths=source_relative \
+   --openapiv2_out ./proto \
+   ./proto/books/books.proto
+*/

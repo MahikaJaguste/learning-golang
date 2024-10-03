@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package notes.v1;
+option go_package = "./books/v1";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/field_behavior.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Notes";
+        version: "1.0";
+        contact: {
+            name: "abc";
+            url: "https://github.com/abc/notes";
+            email: "info@abc.com";
+        };
+        license: {
+            name: "BSD 3-Clause License";
+            url: "https://github.com/abc/notes/LICENSE";
+        };
+    };
+
+    schemes: HTTP;
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
+service BookService {
+    rpc AddBook(AddBookRequest) returns (Book) {
+        option (google.api.http) = {
+            post: "/v1/books/{book.type}"
+            body: "*"
+        };
+    };
+}
+
+message Book {
+    string name = 1;
+    string type = 2;
+}
+
+message AddBookRequest {
+    Book book = 1 [(google.api.field_behavior) = REQUIRED];
+    uint32 libraryId = 2 [(google.api.field_behavior) = REQUIRED];
+    bool isLatestEdition = 3;
+}

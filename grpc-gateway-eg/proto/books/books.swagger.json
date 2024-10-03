@@ -1,0 +1,136 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Notes",
+    "version": "1.0",
+    "contact": {
+      "name": "abc",
+      "url": "https://github.com/abc/notes",
+      "email": "info@abc.com"
+    },
+    "license": {
+      "name": "BSD 3-Clause License",
+      "url": "https://github.com/abc/notes/LICENSE"
+    }
+  },
+  "tags": [
+    {
+      "name": "BookService"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/books/{book.type}": {
+      "post": {
+        "operationId": "BookService_AddBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Book"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "book.type",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BookServiceAddBookBody"
+            }
+          }
+        ],
+        "tags": [
+          "BookService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "BookServiceAddBookBody": {
+      "type": "object",
+      "properties": {
+        "book": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "libraryId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "isLatestEdition": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "book",
+        "libraryId"
+      ]
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1Book": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
